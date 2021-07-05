@@ -1,0 +1,46 @@
+<nav class="navbar">
+  <input style="width: 75%;" class="form-control" type="text" name="name" [(ngModel)]="name" (ngModelChange)="Search()"
+    placeholder="Filter ex: iphone 10">
+    <a mat-raised-button style="width: 23%;" href="https://www.adference.com/" target="_blank">Adference</a>
+</nav>
+
+<table mat-table class="mat-elevation-z8" style="table-layout: fixed;">
+  <thead>
+    <tr>
+      <th scope="col" (click)="sort('id')">ID&nbsp;<i class="fa fa-sort"></i></th>
+      <th scope="col">Name</th>
+      <th scope="col" (click)="sort('amount')">Amount&nbsp;<i class="fa fa-sort"></i></th>
+      <th scope="col">Created On</th>
+      <th scope="col">Last Update</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of collection | orderBy: key: reverse | paginate: {itemsPerPage:5, currentPage:p};">
+      <th>{{item.id}}</th>
+      <td>{{item.name}}</td>
+      <td>{{item.amount}}</td>
+      <td>{{item.date}}</td>
+      <td>{{item.updateddate}}</td>
+      <td>
+        <p>
+          <span *ngIf="item.amount >= 1 " style="color: rgb(71, 163, 91);">In Stock</span>
+          <span *ngIf="item.amount == 0 " style="color: rgb(219, 62, 62);">Out of Stock</span>
+        </p>
+      </td>
+      <td>
+        <button mat-fab color="warn">
+          <mat-icon (click)="deleteResto(item.id)">delete</mat-icon>
+        </button>
+        <button routerLink="/update/{{item.id}}" mat-fab color="primary" style="margin-left: 0.5em">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <pagination-controls (pageChange)="p=$event"></pagination-controls>
+</table>
+<h2>
+  <div *ngIf="collection.length === 0">No data</div>
+</h2>
